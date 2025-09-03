@@ -1,1 +1,1 @@
-Customized file transfer with some bugs but still using proper flags
+Customized filetransfer tool with some big inefficiency but still using proper flags
