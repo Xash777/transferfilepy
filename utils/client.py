@@ -1,6 +1,8 @@
 import socket as s
 import sys
+
 flag = b'EOF'
+CHUNK_SIZE = 512
 
 def close_everything():
     con.close()
@@ -24,8 +26,6 @@ def send_file():
     filename = str(sys.argv[3])
     try:
         f = open(filename, "rb+")
-        f.seek(0, 2)
-        filesize = int(f.tell())
         f.seek(0)
     except:
         print("Error opening the file (File does not exist or wrong name)")
@@ -48,14 +48,11 @@ def send_file():
         close_everything()
 
     # Send the chunks of data
-    buffer = b'' # DEBUGGING PURPOSES???!!!
     try:
-        while chunk := f.read(4096):
-            con.sendall(chunk)
+        while chunk := f.read(CHUNK_SIZE):
+            con.send(chunk)
             buffer += chunk
         con.send(flag)
-        print(size(buffer))
-        con.shutdown(s.SHUT_WR)
         print("Data sent successsfully")
     except:
         print("Error sending the file, try again")

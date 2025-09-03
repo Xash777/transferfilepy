@@ -4,6 +4,8 @@ import os
 # Global flags
 file_buffer = b''
 flag = b'EOF'
+CHUNK_SIZE = 512
+
 def recv_file():
     try:
         con = s.socket(s.AF_INET, s.SOCK_STREAM)
@@ -21,8 +23,8 @@ def recv_file():
         print("Failed deploying the connection on port")
 
     # Receiving file name and opening it
-    filename = cln.recv(64); filename = filename.decode()
     resp = b'filename recv'
+    filename = cln.recv(CHUNK_SIZE); filename = filename.decode()
     cln.send(resp)
     if not os.path.exists(f"./{filename}"):
         os.system(f"touch {filename}")
@@ -30,13 +32,12 @@ def recv_file():
 
     # Receiving the data
     try:
-        while chunk := cln.recv(4096):
+        while chunk := cln.recv(CHUNK_SIZE):
             if flag in chunk:
                 f.write(chunk[:-3])
                 break
             else:
                 f.write(chunk)
-                f.seek(4096, 1)
 
         f.seek(0, 2)
         
