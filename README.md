@@ -1,4 +1,4 @@
-# H1 Customized filetransfer tool with some big inefficiency but still using proper flags
+# Customized filetransfer tool with some big inefficiency but still using proper flags
 
 
 Syntax for sending file:
